@@ -3,9 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Audio Espanol A2</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"/>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    
+    <div class="player-container">
+        <div class="block">
+            <select name="select-book" id="select-book">
+                <option class="option-book" value="Alumno1">Alumno 1</option>
+                <option class="option-book" value="Alumno2">Alumno 2</option>
+                <option class="option-book" value="Cuaderno">Cuaderno</option>
+            </select>
+        </div>
+        <div class="block-track">
+            <select name="select-track" id="select-track">
+                <option class="option-track" value="01">01</option>
+                <option class="option-track" value="02">02</option>
+                <option class="option-track" value="03">03</option>
+            </select>
+        </div>
+        <!-- Song -->
+        <audio src=""></audio>
+        <!-- Progress -->
+        <div class="progress-container" id="progress-container">
+            <div class="progress" id="progress"></div>
+            <div class="duration-wrapper">
+                <span id="current-time">0:00</span>
+                <span id="duration">2:06</span>
+            </div>
+        </div>
+        <!-- Controls -->
+        <div class="player-controls">
+            <i class="fas fa-backward" id="prev" title="Previous"></i>
+            <i class="fas fa-play main-button" id="play" title="Play"></i>
+            <i class="fas fa-forward" id="next" title="Next"></i>
+        </div>
+    </div>
+    <!-- Script -->
+    <script src="script.js"></script>
 </body>
 </html>
