@@ -9,6 +9,11 @@ const prevBtn = document.getElementById('prev');
 const playBtn = document.getElementById('play');
 const nextBtn = document.getElementById('next');
 
+const selectBook = document.getElementById('select-book');
+const selectTrack = document.getElementById('select-track');
+
+const dataForTrack = trackData;
+
 // Songs
 let currSong = 0;
 const songs = [
@@ -53,16 +58,22 @@ function togglePlay() {
 }
 
 function driftSong(pos) {
-    currSong = currSong + pos;
-    if (currSong<0) {
-        currSong = songs.length-1;
-    } else if (currSong==songs.length) {
-        currSong = 0;
-    }
 
-    loadSong(songs[currSong]);
-    if (isPlaying) {
-        music.play();
+    let book = selectBook.value;
+    let track = selectTrack.value;
+
+    if (dataForTrack[book][track]) {
+
+        let keys = Object.keys(dataForTrack[book]).sort();
+        let trackIndex = keys.indexOf(track);
+        let newTrack = trackIndex + pos;
+        if (newTrack < 0) {
+            newTrack = keys.length-1;
+        } else if (newTrack == keys.length) {
+            newTrack = 0;
+        }
+        selectTrack.value = keys[newTrack];
+        loadSong();
     }
 }
 
@@ -105,10 +116,60 @@ music.addEventListener('ended', () => (driftSong(1)));
 progressContainer.addEventListener('click', setProgressBar);
 
 // Update DOM
-function loadSong(song) {
-    // title.textContent = song.displayName;
-    // artist.textContent = song.artist;
-    music.src = './audio/A2/Alumno1/${songName}.mp3'.replace('${songName}', song.name);
+function loadSong() {
+    let book = selectBook.value;
+    let track = selectTrack.value;
+    if (dataForTrack[book][track]) {
+
+        let trackInfo = dataForTrack[book][track];
+
+        title.textContent = trackInfo.name;
+        music.src = trackInfo.path;
+        if (isPlaying) {
+            music.play();
+        }
+    }
 }
 
-loadSong(songs[currSong]);
+// Load list track
+function loadList1() {
+    selectBook.textContent = '';
+
+    Object.keys(dataForTrack).forEach((id) => {
+        opt = document.createElement('option');
+        opt.classList.add('option-track');
+        opt.value = id;
+        opt.textContent = id;
+        selectBook.appendChild(opt);
+    });
+    
+}
+
+function loadList2() {
+    
+    selectTrack.textContent = '';
+
+    let book = selectBook.value;
+
+    if (dataForTrack[book]) {
+        Object.keys(dataForTrack[book]).sort().forEach((id) => {
+            opt = document.createElement('option');
+            opt.classList.add('option-track');
+            opt.value = id;
+            opt.textContent = id;
+            selectTrack.appendChild(opt);
+        }); 
+    }
+    
+}
+
+selectBook.addEventListener('change', () => {
+    loadList2();
+    loadSong();
+});
+
+selectTrack.addEventListener('change', loadSong);
+
+loadList1();
+loadList2();
+loadSong();
